@@ -1,8 +1,8 @@
-Models
-node_modules
-.next
-.git
-scripts/shots
-scripts/shots2
-scripts/refine
-scripts/*.log
+/Models
+/node_modules
+/.next
+/.git
+/scripts/shots
+/scripts/shots2
+/scripts/refine
+/scripts/*.log
