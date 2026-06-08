@@ -16,7 +16,15 @@ type Part = { node: THREE.Object3D; base: THREE.Vector3; dir: THREE.Vector3 };
  * Cabinet with an exploded-view effect. The 7 authored CABINET_* parts separate
  * outward and reassemble as the section scrolls (sin curve over progress).
  */
-function CabinetModel({ progress }: { progress: MutableRefObject<number> }) {
+export function CabinetModel({
+  progress,
+  instant = false,
+  onReady,
+}: {
+  progress: MutableRefObject<number>;
+  instant?: boolean;
+  onReady?: () => void;
+}) {
   const { scene } = useGLTF(CABINET.url);
   const rootRef = useRef<THREE.Group>(null);
   const partsRef = useRef<Part[]>([]);
@@ -90,7 +98,9 @@ function CabinetModel({ progress }: { progress: MutableRefObject<number> }) {
     usable.forEach((p) => centroid.add(p.position));
     centroid.multiplyScalar(1 / usable.length);
 
-    spreadRef.current = maxDim * 0.26;
+    // Slightly tighter spread keeps every part inside the framed canvas at peak
+    // explosion (was over-spreading and clipping at the edges).
+    spreadRef.current = maxDim * 0.2;
     partsRef.current = usable.map((node, i) => {
       const dir = node.position.clone().sub(centroid);
       if (dir.lengthSq() < 1e-4) {
@@ -100,14 +110,15 @@ function CabinetModel({ progress }: { progress: MutableRefObject<number> }) {
       dir.normalize();
       return { node, base: node.position.clone(), dir };
     });
-  }, [cloned]);
+    onReady?.();
+  }, [cloned, onReady]);
 
   const tmp = useMemo(() => new THREE.Vector3(), []);
   useFrame((_, delta) => {
     const p = clamp01(progress.current);
     const amt = Math.sin(p * Math.PI); // 0 → 1 → 0 : separate then reassemble
     const spread = spreadRef.current;
-    const k = 1 - Math.pow(0.0025, delta);
+    const k = instant ? 1 : 1 - Math.pow(0.0025, delta);
     for (const part of partsRef.current) {
       tmp.copy(part.dir).multiplyScalar(amt * spread).add(part.base);
       part.node.position.lerp(tmp, k);
@@ -123,12 +134,21 @@ function CabinetModel({ progress }: { progress: MutableRefObject<number> }) {
 
 export default function CabinetScene({
   progress,
+  instant = false,
+  onReady,
 }: {
   progress: MutableRefObject<number>;
+  instant?: boolean;
+  onReady?: () => void;
 }) {
   return (
-    <Stage config={CABINET} shadowScale={11} shadowOpacity={0.34}>
-      <CabinetModel progress={progress} />
+    <Stage
+      config={CABINET}
+      shadowScale={11}
+      shadowOpacity={0.34}
+      disableParallax={instant}
+    >
+      <CabinetModel progress={progress} instant={instant} onReady={onReady} />
     </Stage>
   );
 }

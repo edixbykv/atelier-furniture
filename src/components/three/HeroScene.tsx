@@ -25,12 +25,33 @@ const _pointer = new THREE.Vector3();
  * Slow cinematic push-in: on load the camera eases forward into the suite (the
  * "entering the room" feel); continued scroll pushes a touch deeper. A whisper
  * of pointer drift keeps the frame alive.
+ *
+ * `instant` (frame-capture mode): pose is a pure function of `progress` — no
+ * load-intro, no damping, no pointer — so each scroll step renders deterministically.
  */
-function HeroCamera({ progress }: { progress?: MutableRefObject<number> }) {
+export function HeroCamera({
+  progress,
+  instant = false,
+}: {
+  progress?: MutableRefObject<number>;
+  instant?: boolean;
+}) {
   const start = useRef(0);
   const inited = useRef(false);
 
   useFrame((state, delta) => {
+    const scroll = progress ? clamp01(progress.current) : 0;
+
+    if (instant) {
+      // p=0 sits at the known-good interior framing; scroll dollies forward into
+      // the suite. Pure mapping → identical every render.
+      const e = 1 - Math.pow(1 - scroll, 2); // ease-out
+      _tmp.copy(_base).addScaledVector(_forward, e * 1.7);
+      state.camera.position.copy(_tmp);
+      state.camera.lookAt(_look.x, _look.y, _look.z);
+      return;
+    }
+
     if (!inited.current) {
       inited.current = true;
       start.current = performance.now();
@@ -39,7 +60,6 @@ function HeroCamera({ progress }: { progress?: MutableRefObject<number> }) {
     const elapsed = (performance.now() - start.current) / 1000;
     const it = clamp01(elapsed / 2.6);
     const intro = 1 - Math.pow(1 - it, 3); // ease-out cubic
-    const scroll = progress ? clamp01(progress.current) : 0;
     const push = Math.min(1, intro) + scroll * 0.5;
 
     _tmp.copy(_from).lerp(_base, Math.min(1, push));
@@ -56,8 +76,10 @@ function HeroCamera({ progress }: { progress?: MutableRefObject<number> }) {
 /** Section 1 hero — bedroom interior with a slow load/scroll push-in. */
 export default function HeroScene({
   progress,
+  instant = false,
 }: {
   progress?: MutableRefObject<number>;
+  instant?: boolean;
 }) {
   return (
     <Stage
@@ -66,7 +88,7 @@ export default function HeroScene({
       shadowScale={16}
       disableParallax
       disableDrift
-      sceneRig={<HeroCamera progress={progress} />}
+      sceneRig={<HeroCamera progress={progress} instant={instant} />}
     >
       <AutoModel
         url={BEDROOM.url}

@@ -75,7 +75,10 @@ export const CABINET: ModelConfig = {
   url: "/models/cabinet.glb",
   targetSize: 5.6,
   groundY: true,
-  camera: { yaw: 22, pitch: 5, dist: 7.4, fov: 34, targetY: 0.5 },
+  // targetY tuned to the cabinet's true vertical centre — its longest axis is the
+  // width, so model height ≈ 0.27·targetSize; looking at 0.5 framed above it and
+  // dropped the unit into the lower third.
+  camera: { yaw: 22, pitch: 5, dist: 7.4, fov: 34, targetY: 0.27 },
   // Gallery-spotlight mood: strong key + rim against a dark pedestal backdrop so
   // the pale carcass reads with crisp edges and deep contact shadow.
   env: { intensity: 0.95, exposure: 1.0 },

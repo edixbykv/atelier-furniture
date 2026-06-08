@@ -11,13 +11,11 @@ import StatsSection from "@/components/sections/StatsSection";
 import WhyUsSection from "@/components/sections/WhyUsSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/Footer";
-import AssetPreloader from "@/components/three/AssetPreloader";
 
 export default function Home() {
   return (
     <SmoothScroll>
       <Preloader />
-      <AssetPreloader />
       <CustomCursor />
       <Nav />
       <main id="top" className="relative">

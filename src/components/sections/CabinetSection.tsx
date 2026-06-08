@@ -1,19 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Lazy3D from "@/components/three/Lazy3D";
-import CanvasLoader from "@/components/three/CanvasLoader";
+import ScrollSequence from "@/components/ScrollSequence";
 import { RevealWords, Reveal } from "@/components/ui/Reveal";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 
-const CabinetScene = dynamic(() => import("@/components/three/CabinetScene"), {
-  ssr: false,
-  loading: () => <CanvasLoader label="Assembling components" />,
-});
-
-/** Section 4 — Cabinet. Pinned canvas; parts explode apart and reassemble. */
+/** Section 4 — Cabinet. Pinned sequence; parts explode apart and reassemble. */
 export default function CabinetSection() {
   const ref = useRef<HTMLElement>(null);
   const progress = useScrollProgress(ref);
@@ -50,12 +43,10 @@ export default function CabinetSection() {
           </h2>
         </div>
 
-        {/* 3D exploded cabinet */}
-        <Lazy3D className="relative z-0 flex-1" fallback={<CanvasLoader label="Assembling components" dark />}>
-          <div className="absolute inset-0 [&_canvas]:!h-full [&_canvas]:!w-full">
-            <CabinetScene progress={progress} />
-          </div>
-        </Lazy3D>
+        {/* Exploded cabinet — full-stage sequence behind the copy (preserves the
+            captured framing so parts never clip). */}
+        <ScrollSequence name="cabinet" progress={progress} className="absolute inset-0 z-0" />
+        <div className="relative z-0 flex-1" aria-hidden />
 
         {/* mid-scroll exploded label */}
         <motion.span

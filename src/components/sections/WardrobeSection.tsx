@@ -68,10 +68,11 @@ export default function WardrobeSection() {
         {/* Visual stage with door reveal */}
         <div className="order-1 lg:order-2 lg:col-span-7">
           <div
-            className="relative mx-auto aspect-[5/4] w-full max-w-2xl overflow-hidden rounded-[2px] bg-gradient-to-b from-sand/50 to-linen/60 shadow-[0_40px_120px_-40px_rgba(43,37,32,0.45)]"
+            className="relative mx-auto aspect-[5/4] w-full max-w-2xl overflow-hidden rounded-[2px] bg-gradient-to-b from-espresso via-cocoa to-walnut shadow-[0_40px_120px_-40px_rgba(43,37,32,0.55)]"
             style={{ perspective: "1600px" }}
           >
-            {/* Revealed interior render */}
+            {/* Revealed interior render — deep warm stage gives the pale wardrobe
+                crisp contrast (was washing out on the light background). */}
             <motion.div style={{ scale: imgScale }} className="absolute inset-0">
               <Image
                 src={WARDROBE_RENDERS.hero}
@@ -82,6 +83,8 @@ export default function WardrobeSection() {
                 priority={false}
               />
             </motion.div>
+            {/* soft spotlight pooled behind the wardrobe */}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_42%,rgba(168,123,79,0.18),transparent_70%)]" />
 
             {/* Left door */}
             <motion.div

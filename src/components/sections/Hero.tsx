@@ -1,18 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import Lazy3D from "@/components/three/Lazy3D";
-import CanvasLoader from "@/components/three/CanvasLoader";
+import ScrollSequence from "@/components/ScrollSequence";
 import { RevealLines } from "@/components/ui/Reveal";
 import MagneticButton from "@/components/ui/MagneticButton";
 import { useScrollProgress } from "@/lib/useScrollProgress";
-
-const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
-  ssr: false,
-  loading: () => <CanvasLoader label="Preparing the suite" dark />,
-});
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -26,15 +19,8 @@ export default function Hero() {
       ref={ref}
       className="relative flex min-h-[100svh] flex-col overflow-hidden bg-cocoa"
     >
-      {/* 3D bedroom backdrop */}
-      <Lazy3D
-        className="pointer-events-auto absolute inset-0 z-0"
-        fallback={<div className="absolute inset-0 bg-gradient-to-b from-walnut via-cocoa to-walnut" />}
-      >
-        <div className="absolute inset-0 [&_canvas]:!h-full [&_canvas]:!w-full">
-          <HeroScene progress={progress} />
-        </div>
-      </Lazy3D>
+      {/* Pre-rendered bedroom backdrop — scrubs forward as you scroll the hero. */}
+      <ScrollSequence name="hero" progress={progress} priority className="absolute inset-0 z-0" />
 
       {/* Cinematic atmosphere: warm tint + corner vignette + bottom scrim for the
           copy. Suite stays visible; legibility reinforced with a text-shadow. */}

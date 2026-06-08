@@ -1,19 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Lazy3D from "@/components/three/Lazy3D";
-import CanvasLoader from "@/components/three/CanvasLoader";
+import ScrollSequence from "@/components/ScrollSequence";
 import { RevealWords } from "@/components/ui/Reveal";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 
-const KitchenScene = dynamic(() => import("@/components/three/KitchenScene"), {
-  ssr: false,
-  loading: () => <CanvasLoader label="Entering the kitchen" />,
-});
-
-/** Section 3 — Kitchen. Pinned canvas with a scroll-driven camera fly-through. */
+/** Section 3 — Kitchen. Pinned scroll-scrubbed image sequence (pre-rendered). */
 export default function KitchenSection() {
   const ref = useRef<HTMLElement>(null);
   const progress = useScrollProgress(ref);
@@ -36,14 +29,7 @@ export default function KitchenSection() {
         {/* warm ambient glow */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(168,123,79,0.20),transparent_62%)]" />
 
-        <Lazy3D
-          className="absolute inset-0"
-          fallback={<CanvasLoader label="Entering the kitchen" dark />}
-        >
-          <div className="absolute inset-0 [&_canvas]:!h-full [&_canvas]:!w-full">
-            <KitchenScene progress={progress} />
-          </div>
-        </Lazy3D>
+        <ScrollSequence name="kitchen" progress={progress} className="absolute inset-0" />
 
         {/* top + bottom scrims keep headlines readable over the model */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-[40%] bg-gradient-to-b from-cocoa via-cocoa/80 to-transparent" />

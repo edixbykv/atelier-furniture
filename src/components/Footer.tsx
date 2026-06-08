@@ -32,7 +32,17 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-paper/10 pt-6 text-xs text-paper/40 sm:flex-row sm:items-center">
           <span>© {year} {BRAND.full}. All rights reserved.</span>
-          <span>Crafted with precision · {BRAND.tagline}</span>
+          <span className="flex items-center gap-1.5">
+            Powered by{" "}
+            <a
+              href="https://kvai.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-paper/70 underline-offset-4 transition-colors hover:text-bronze hover:underline"
+            >
+              KVAI.in
+            </a>
+          </span>
         </div>
       </div>
     </footer>

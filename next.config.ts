@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
+  // Hide the dev compile indicator so it never bleeds into captured frames.
+  devIndicators: false,
   images: {
     formats: ["image/avif", "image/webp"],
   },
@@ -17,6 +19,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/renders/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/seq/:path*",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],

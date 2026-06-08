@@ -10,8 +10,17 @@ import type { MutableRefObject } from "react";
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
-/** Drives a cinematic fly-through using the section's scroll progress (0..1). */
-function Flythrough({ progress }: { progress: MutableRefObject<number> }) {
+/**
+ * Drives a cinematic fly-through using the section's scroll progress (0..1).
+ * `instant` (frame-capture): snaps to the exact pose, no damping/pointer.
+ */
+export function Flythrough({
+  progress,
+  instant = false,
+}: {
+  progress: MutableRefObject<number>;
+  instant?: boolean;
+}) {
   const target = new THREE.Vector3();
   useFrame((state, delta) => {
     const p = clamp01(progress.current);
@@ -24,17 +33,21 @@ function Flythrough({ progress }: { progress: MutableRefObject<number> }) {
     const dist = lerp(10.6, 7.8, e);
     const ty = lerp(KITCHEN.targetSize * 0.34, KITCHEN.targetSize * 0.3, e);
 
-    const px = state.pointer.x * 0.3;
-    const py = state.pointer.y * 0.18;
+    const px = instant ? 0 : state.pointer.x * 0.3;
+    const py = instant ? 0 : state.pointer.y * 0.18;
 
     const cx = Math.sin(yaw) * Math.cos(pitch) * dist + px;
     const cz = Math.cos(yaw) * Math.cos(pitch) * dist;
     const cy = Math.sin(pitch) * dist + ty + py;
 
-    const k = 1 - Math.pow(0.0009, delta);
-    state.camera.position.x += (cx - state.camera.position.x) * k;
-    state.camera.position.y += (cy - state.camera.position.y) * k;
-    state.camera.position.z += (cz - state.camera.position.z) * k;
+    if (instant) {
+      state.camera.position.set(cx, cy, cz);
+    } else {
+      const k = 1 - Math.pow(0.0009, delta);
+      state.camera.position.x += (cx - state.camera.position.x) * k;
+      state.camera.position.y += (cy - state.camera.position.y) * k;
+      state.camera.position.z += (cz - state.camera.position.z) * k;
+    }
     target.set(0, KITCHEN.targetSize * 0.32, 0);
     state.camera.lookAt(target);
   });
@@ -43,8 +56,10 @@ function Flythrough({ progress }: { progress: MutableRefObject<number> }) {
 
 export default function KitchenScene({
   progress,
+  instant = false,
 }: {
   progress: MutableRefObject<number>;
+  instant?: boolean;
 }) {
   return (
     <Stage
@@ -53,7 +68,7 @@ export default function KitchenScene({
       disableParallax
       shadowScale={14}
       shadowOpacity={0.32}
-      sceneRig={<Flythrough progress={progress} />}
+      sceneRig={<Flythrough progress={progress} instant={instant} />}
     >
       <AutoModel
         url={KITCHEN.url}
