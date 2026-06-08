@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ATELIER — premium furniture manufacturing design system
+   Warm luxury palette. No pure-black backgrounds anywhere.
+   ============================================================ */
+
+@theme {
+  --color-paper: #f4f1ec;      /* warm ivory base */
+  --color-cream: #faf8f4;
+  --color-sand: #e8e1d6;
+  --color-linen: #ece5d9;
+  --color-taupe: #b8ab97;
+  --color-stone: #8c8170;
+  --color-bronze: #a87b4f;     /* brass / wood accent */
+  --color-bronze-deep: #8a5f37;
+  --color-espresso: #2b2520;   /* primary text */
+  --color-cocoa: #1f1b17;      /* deep warm bg (never #000) */
+  --color-walnut: #15120f;     /* deepest warm bg */
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+
+  --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --background: #f4f1ec;
+  --foreground: #2b2520;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smoothing */
+  background: var(--background);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom cursor: hide native only on fine-pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+}
+
+::selection {
+  background: var(--color-bronze);
+  color: #fff;
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Typography helpers */
+.font-display { font-family: var(--font-display), Georgia, serif; }
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+/* Fine-line uppercase eyebrow label */
+.eyebrow {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+/* Subtle film-grain / noise overlay utility */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* Premium thin scrollbar (hidden, Lenis-driven) */
+::-webkit-scrollbar { width: 0px; background: transparent; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  body { cursor: auto !important; }
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 38s linear infinite; }
+.animate-marquee-rev { animation: marquee 42s linear infinite reverse; }
+
+/* Floating idle motion */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.animate-floaty { animation: floaty 6s ease-in-out infinite; }
+
+/* Shimmer for skeletons */
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}

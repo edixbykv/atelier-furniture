@@ -1,0 +1,282 @@
+{
+  "bedroom_-_interior.glb": {
+    "file": "bedroom_-_interior.glb",
+    "sizeMB": "84.0",
+    "dimensions": [
+      4.095,
+      2.443,
+      6.424
+    ],
+    "center": [
+      -0.008,
+      1.205,
+      -14.971
+    ],
+    "maxDim": 6.424,
+    "autoScale": 0.623,
+    "recenterOffset": [
+      0.008,
+      -1.205,
+      14.971
+    ],
+    "recommended": {
+      "targetWorldSize": 4,
+      "cameraFovDeg": 35,
+      "cameraDistance": 10.149,
+      "cameraPos": [
+        7.104,
+        4.567,
+        9.134
+      ],
+      "cameraTarget": [
+        0,
+        0,
+        0
+      ],
+      "keyLight": [
+        4.8,
+        7.2,
+        4.8
+      ],
+      "fillLight": [
+        -6,
+        3.2,
+        2.4
+      ],
+      "rimLight": [
+        0,
+        4.8,
+        -6.4
+      ]
+    },
+    "stats": {
+      "meshCount": 96,
+      "matCount": 41,
+      "texCount": 76,
+      "animations": [],
+      "totalTexMB": "73.7"
+    },
+    "sceneTopLevel": [
+      {
+        "name": "Sketchfab_model",
+        "children": [
+          "root"
+        ]
+      }
+    ],
+    "interestingNodes": [],
+    "totalNodeCount": 174
+  },
+  "wardrobe.glb": {
+    "file": "wardrobe.glb",
+    "sizeMB": "243.6",
+    "dimensions": [
+      214.223,
+      102.109,
+      78.23
+    ],
+    "center": [
+      -43.041,
+      68.675,
+      -122.254
+    ],
+    "maxDim": 214.223,
+    "autoScale": 0.019,
+    "recenterOffset": [
+      43.041,
+      -68.675,
+      122.254
+    ],
+    "recommended": {
+      "targetWorldSize": 4,
+      "cameraFovDeg": 35,
+      "cameraDistance": 10.149,
+      "cameraPos": [
+        7.104,
+        4.567,
+        9.134
+      ],
+      "cameraTarget": [
+        0,
+        0,
+        0
+      ],
+      "keyLight": [
+        4.8,
+        7.2,
+        4.8
+      ],
+      "fillLight": [
+        -6,
+        3.2,
+        2.4
+      ],
+      "rimLight": [
+        0,
+        4.8,
+        -6.4
+      ]
+    },
+    "stats": {
+      "meshCount": 141,
+      "matCount": 77,
+      "texCount": 40,
+      "animations": [],
+      "totalTexMB": "3.8"
+    },
+    "sceneTopLevel": [
+      {
+        "name": "Sketchfab_model",
+        "children": [
+          "Collada visual scene group"
+        ]
+      }
+    ],
+    "interestingNodes": [],
+    "totalNodeCount": 146
+  },
+  "kitchen_design_set_v.001.glb": {
+    "file": "kitchen_design_set_v.001.glb",
+    "sizeMB": "61.6",
+    "dimensions": [
+      148.266,
+      94.56,
+      135.458
+    ],
+    "center": [
+      349.021,
+      47.208,
+      1.621
+    ],
+    "maxDim": 148.266,
+    "autoScale": 0.027,
+    "recenterOffset": [
+      -349.021,
+      -47.208,
+      -1.621
+    ],
+    "recommended": {
+      "targetWorldSize": 4,
+      "cameraFovDeg": 35,
+      "cameraDistance": 10.149,
+      "cameraPos": [
+        7.104,
+        4.567,
+        9.134
+      ],
+      "cameraTarget": [
+        0,
+        0,
+        0
+      ],
+      "keyLight": [
+        4.8,
+        7.2,
+        4.8
+      ],
+      "fillLight": [
+        -6,
+        3.2,
+        2.4
+      ],
+      "rimLight": [
+        0,
+        4.8,
+        -6.4
+      ]
+    },
+    "stats": {
+      "meshCount": 124,
+      "matCount": 100,
+      "texCount": 56,
+      "animations": [],
+      "totalTexMB": "8.0"
+    },
+    "sceneTopLevel": [
+      {
+        "name": "Sketchfab_model",
+        "children": [
+          "Collada visual scene group"
+        ]
+      }
+    ],
+    "interestingNodes": [],
+    "totalNodeCount": 129
+  },
+  "cabinet.glb": {
+    "file": "cabinet.glb",
+    "sizeMB": "2.8",
+    "dimensions": [
+      0.53,
+      2.061,
+      2.698
+    ],
+    "center": [
+      0.013,
+      1.031,
+      -0.34
+    ],
+    "maxDim": 2.698,
+    "autoScale": 1.483,
+    "recenterOffset": [
+      -0.013,
+      -1.031,
+      0.34
+    ],
+    "recommended": {
+      "targetWorldSize": 4,
+      "cameraFovDeg": 35,
+      "cameraDistance": 10.149,
+      "cameraPos": [
+        7.104,
+        4.567,
+        9.134
+      ],
+      "cameraTarget": [
+        0,
+        0,
+        0
+      ],
+      "keyLight": [
+        4.8,
+        7.2,
+        4.8
+      ],
+      "fillLight": [
+        -6,
+        3.2,
+        2.4
+      ],
+      "rimLight": [
+        0,
+        4.8,
+        -6.4
+      ]
+    },
+    "stats": {
+      "meshCount": 6,
+      "matCount": 4,
+      "texCount": 2,
+      "animations": [],
+      "totalTexMB": "2.4"
+    },
+    "sceneTopLevel": [
+      {
+        "name": "Sketchfab_model",
+        "children": [
+          "root"
+        ]
+      }
+    ],
+    "interestingNodes": [
+      "CABINET_6",
+      "CABINET.001_0",
+      "CABINET.002_1",
+      "CABINET.003_2",
+      "CABINET.004_3",
+      "CABINET.005_4",
+      "CABINET.006_5"
+    ],
+    "totalNodeCount": 16
+  }
+}

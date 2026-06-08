@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>html,body{margin:0;background:#f4f1ec;overflow:hidden}</style>
+  <script type="importmap">
+  { "imports": {
+      "three": "/node_modules/three/build/three.module.js",
+      "three/addons/": "/node_modules/three/examples/jsm/"
+  } }
+  </script>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+    const W = 1440, H = 810, DPR = 1.25;
+    const canvas = document.getElementById('c');
+    canvas.style.width = W+'px'; canvas.style.height = H+'px';
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+    renderer.setPixelRatio(DPR); renderer.setSize(W,H,false);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#f4f1ec');
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const key = new THREE.DirectionalLight(0xfff4e8, 2.0); key.position.set(5,8,6); scene.add(key);
+    const fill = new THREE.DirectionalLight(0xe8f0ff, 0.9); fill.position.set(-6,4,3); scene.add(fill);
+
+    const camera = new THREE.PerspectiveCamera(45, W/H, 0.01, 100);
+    let size = new THREE.Vector3(), TARGET = 7.5;
+    window.__ready = false;
+
+    const loader = new GLTFLoader(); loader.setMeshoptDecoder(MeshoptDecoder);
+    const url = new URLSearchParams(location.search).get('model') || '/public/models/bedroom.glb';
+    loader.load(url, (g) => {
+      const m = g.scene;
+      const box = new THREE.Box3().setFromObject(m);
+      const s = new THREE.Vector3(); box.getSize(s); size.copy(s);
+      const c = new THREE.Vector3(); box.getCenter(c);
+      const maxDim = Math.max(s.x,s.y,s.z);
+      const sc = TARGET/maxDim; m.scale.setScalar(sc);
+      m.position.set(-c.x*sc, -c.y*sc, -c.z*sc);
+      size.multiplyScalar(sc);
+      scene.add(m);
+      window.__size = { x:size.x, y:size.y, z:size.z };
+      window.__ready = true;
+    });
+
+    // cam params: px,py,pz (absolute), or orbit yaw/pitch/dist; lookx,looky,lookz; fov
+    window.__setCam = (p) => {
+      if (p.fov) { camera.fov = p.fov; }
+      if (p.px !== undefined) camera.position.set(p.px, p.py, p.pz);
+      else {
+        const yaw=p.yaw*Math.PI/180, pitch=p.pitch*Math.PI/180, d=p.dist, ly=p.ly||0;
+        camera.position.set(Math.sin(yaw)*Math.cos(pitch)*d, Math.sin(pitch)*d+ly, Math.cos(yaw)*Math.cos(pitch)*d);
+      }
+      camera.lookAt(p.lx||0, p.ly||0, p.lz||0);
+      camera.updateProjectionMatrix();
+      renderer.render(scene, camera);
+    };
+    function loop(){ if(window.__ready) renderer.render(scene,camera); requestAnimationFrame(loop); }
+    loop();
+  </script>
+</body>
+</html>
