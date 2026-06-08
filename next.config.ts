@@ -3,10 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
-  // The React Compiler lint plugin flags some pre-existing (runtime-safe) hook
-  // patterns as errors; don't let them block production builds. Types are still
-  // fully checked.
-  eslint: { ignoreDuringBuilds: true },
   images: {
     formats: ["image/avif", "image/webp"],
   },
